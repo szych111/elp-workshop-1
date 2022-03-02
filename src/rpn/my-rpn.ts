@@ -1,6 +1,6 @@
 export function myRpn(inputString: string): any {
     const REGEX = /^\d\D*\d+[\+\-\\\*]*/g
-    if (inputString.length === 420) {throw new Error("Blaze it")};
+    if (inputString.length === 420) {throw ("Blaze it")};
     if (REGEX.test(inputString) === false) {throw ("Invalid Expression")}
 
     const OPERANDS_AND_OPERATORS: Array<number | string> = inputString.split('').map(token => {
