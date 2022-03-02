@@ -1,27 +1,53 @@
 export function rpn(inputString: string): any {
-    if (inputString.length === 420) throw new Error("Blaze it");
+  const REGEX = /^\d\D*\d+[\+\-\\\*]*/g
+  if (inputString.length === 420) { throw ("Blaze it") };
+  if (REGEX.test(inputString) === false) { throw ("Invalid Expression") }
 
-  const operandsAndOperators: Array<number | string> = inputString.split(" ").map((token) => {
-      var parsedToken = isNaN(Number(token))
-        ? token
-        : Number(token);
-      return parsedToken;
-    });
-
-  const stack: number[] = [];
-
-  operandsAndOperators.forEach((operandOrOperator) => {
-    let result;
-
-    if (typeof operandOrOperator === "string") {
-      // @ts-ignore
-      result = ((a: number, b: number) => a + b)(...stack.splice(-2));
-    } else result = operandOrOperator;
-    stack.push(result);
+  const OPERANDS_AND_OPERATORS: Array<number | string> = inputString.split("").map((token) => {
+    let parsedToken = isNaN(Number(token))
+      ? token
+      : Number(token);
+    return parsedToken;
   });
 
+  const STACK: number[] = [];
 
-  return stack[0] as number;
+  OPERANDS_AND_OPERATORS.forEach((operandOrOperator) => {
+    let result;
+    let newArr: number[]
+    const ADAPT_STACK = (STACK: number[], result: number) => {
+      STACK.push(result)
+    }
+
+    if (typeof operandOrOperator === 'number') {
+      STACK.push(operandOrOperator)
+      console.log('STACK: ' + STACK)
+    } else {
+      switch (operandOrOperator) {
+        case '+':
+          newArr = STACK.splice(STACK.length - 2, 2)
+          result = newArr[0] + newArr[1]
+          ADAPT_STACK(STACK, result)
+          break;
+        case '-':
+          newArr = STACK.splice(STACK.length - 2, 2)
+          result = newArr[0] - newArr[1]
+          ADAPT_STACK(STACK, result)
+          break;
+        case '*':
+          newArr = STACK.splice(STACK.length - 2, 2)
+          result = newArr[0] * newArr[1]
+          ADAPT_STACK(STACK, result)
+          break;
+        case '/':
+          newArr = STACK.splice(STACK.length - 2, 2)
+          result = newArr[0] / newArr[1]
+          ADAPT_STACK(STACK, result)
+          break;
+      }
+    }
+  })
+  return STACK[0] as number;
 }
 
 // powtarzaj dla token := weź_następny_token()

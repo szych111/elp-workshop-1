@@ -1,21 +1,25 @@
 import { rpn } from "./rpn";
 
 describe("rpn()", () => {
-    it("returs number when passed", () => {
-      expect(rpn("2")).toBe(2);
-    });
-
-
-  it("correctly adds 2 numbers", function () {
-    expect(rpn("2 0 +")).toBe(2);
+  it("adds correctly two numbers", () => {
+    expect(rpn("13+")).toBe(4);
   });
 
 
-  it(`correctly adds 2 numbers`, async () => {
-    expect(rpn("2 2 +")).toBe(4);
-  });
+it("correctly muliplies two numbers", () => {
+  expect(rpn("22*4/")).toBe(1);
+});
 
-  it("correctly divides  2  numbers", () => {
-    expect(rpn("2 2 /")).toBe(1);
-  });
+
+it("correctly devides number by number", () => {
+  expect(rpn("22/")).toBe(1);
+});
+
+
+it("correctly performs multiple operations", () => {
+  expect(rpn("434+51+2*++")).toBe(23);
+});
+
+it("throws an error when called with no numbers", () => {
+  expect(() => {rpn("+-*")}).toThrow("Invalid Expression");})
 });
